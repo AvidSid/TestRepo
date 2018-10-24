@@ -231,7 +231,7 @@ class GHAapp < Sinatra::Application
       }
     end
 
-    ## 
+    ## method to authenticate and set up the client
     def authenticate_installation(payload)
       installation_id = payload['installation']['id']
       installation_token = @client.create_app_installation_access_token(installation_id)[:token]
