@@ -218,11 +218,11 @@ class GHAapp < Sinatra::Application
         when 'dir'
           logger.debug "item is of type directory"
 
+          path_for_fetch = item_name
+
           if base_path != ''
             path_for_fetch = base_path + "/" + item_name
           end
-          else
-            path_for_fetch = item_name
 
           logger.debug "path : " + path_for_fetch
           dir_result = @bot_client.contents(repo, :path => path_for_fetch)
