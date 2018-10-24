@@ -132,7 +132,7 @@ class GHAapp < Sinatra::Application
 
       end
     when 'push'
-      # authenticate_installation(payload)
+
       authenticate_installation(payload)
       handle_push_event(payload)
       end
