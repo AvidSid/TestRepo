@@ -226,7 +226,7 @@ class GHAapp < Sinatra::Application
 
           logger.debug "path : " + path_for_fetch
           dir_result = @bot_client.contents(repo, :path => path_for_fetch)
-          recursive_repo_file_fetch(dir_result, repo)
+          recursive_repo_file_fetch(dir_result, repo, path_for_fetch)
         end
       }
     end
