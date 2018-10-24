@@ -133,6 +133,7 @@ class GHAapp < Sinatra::Application
       end
     when 'push'
       # authenticate_installation(payload)
+      authenticate_installation(payload)
       handle_push_event(payload)
       end
 
@@ -184,6 +185,12 @@ class GHAapp < Sinatra::Application
       logger.debug author_email
 
       logger.debug branch
+
+      repo = payload['repository']['full_name']
+
+      result = @bot_client.contents(repo, {}})
+
+      logger.debug result
 
     end
 
