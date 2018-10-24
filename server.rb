@@ -190,11 +190,11 @@ class GHAapp < Sinatra::Application
 
       result = @bot_client.contents(repo, {})
 
-      recursive_repo_file_fetch(result)
+      recursive_repo_file_fetch(result, repo)
 
     end
 
-    def recursive_repo_file_fetch(result)
+    def recursive_repo_file_fetch(result, repo)
 
       result.each { |item|
 
@@ -211,7 +211,7 @@ class GHAapp < Sinatra::Application
         when 'dir'
           logger.debug "item is of type directory"
           dir_result = @bot_client.contents(repo, :path => item_name)
-          recursive_repo_file_fetch(dir_result)
+          recursive_repo_file_fetch(dir_result, repo)
         end
       }
     end
