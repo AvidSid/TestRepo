@@ -178,7 +178,6 @@ class GHAapp < Sinatra::Application
       logger.debug author_name
 
       logger.debug author_email
-
     end
 
     ## 
