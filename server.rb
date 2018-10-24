@@ -190,11 +190,11 @@ class GHAapp < Sinatra::Application
 
       result = @bot_client.contents(repo, {})
 
-      recursive_repo_file_fetch(result, repo)
+      recursive_repo_file_fetch(result, repo, '')
 
     end
 
-    def recursive_repo_file_fetch(result, repo)
+    def recursive_repo_file_fetch(result, repo, base_path)
 
       result.each { |item|
 
@@ -205,12 +205,27 @@ class GHAapp < Sinatra::Application
         case item.type
         when 'file'
           logger.debug 'item is of type file'
-          # item.name.end_with ? '.tf' : logger.debug 'item is of type TF'
-          # item_name.ends_with ? '.tf.json': logger.debug 'item is of type TF JSON'
-        # end
+
+          if item.name.end_with? '.tf'
+            logger.debug 'item is of type TF'
+            end
+
+          if item_name.ends_with? '.tf.json'
+            logger.debug 'item is of type TF JSON'
+
+          end
+
         when 'dir'
           logger.debug "item is of type directory"
-          dir_result = @bot_client.contents(repo, :path => item_name)
+
+          if base_path != ''
+            path_for_fetch = base_path + "/" + item_name
+          end
+          else
+            path_for_fetch = item_name
+
+          logger.debug "path : " + path_for_fetch
+          dir_result = @bot_client.contents(repo, :path => path_for_fetch)
           recursive_repo_file_fetch(dir_result, repo)
         end
       }
