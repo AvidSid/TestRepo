@@ -129,6 +129,7 @@ class GHAapp < Sinatra::Application
       authenticate_installation(payload)
       if payload['action'] === 'opened'
         handle_issue_opened_event(payload)
+        
       end
     end
 
