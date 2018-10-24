@@ -188,7 +188,7 @@ class GHAapp < Sinatra::Application
 
       repo = payload['repository']['full_name']
 
-      result = @bot_client.contents(repo, {}})
+      result = @bot_client.contents(repo, {})
 
       logger.debug result
 
