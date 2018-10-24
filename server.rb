@@ -165,7 +165,15 @@ class GHAapp < Sinatra::Application
 
       repo = payload['repository']['full_name']
 
+      repo_url = payload['repository']['clone_url']
+
+      author = payload['commits']['author']['name']
+
       logger.debug repo
+
+      logger.debug repo_url
+
+      logger.debug author
     end
 
     ## 
