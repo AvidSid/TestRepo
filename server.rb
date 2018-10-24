@@ -129,9 +129,11 @@ class GHAapp < Sinatra::Application
       authenticate_installation(payload)
       if payload['action'] === 'opened'
         handle_issue_opened_event(payload)
-        
+
       end
-    end
+    when 'push'
+      authenticate_installation(payload)        
+      end
 
     'ok'  # we have to return _something_ ;)
   end
@@ -154,6 +156,15 @@ class GHAapp < Sinatra::Application
       repo = payload['repository']['full_name']
       issue_number = payload['issue']['number']
       @bot_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+    end
+
+    def handle_push_event(payload)
+      logger.debug 'A push event was received'
+      logger.debug payload
+
+      repo = payload['repository']['full_name']
+
+      logger.debug repo
     end
 
     ## 
