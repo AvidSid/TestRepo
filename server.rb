@@ -190,6 +190,12 @@ class GHAapp < Sinatra::Application
 
       result = @bot_client.contents(repo, {})
 
+      result.each { |item|
+
+        logger.debug item
+        logger.debug item.name
+      }
+
       logger.debug result
 
     end
