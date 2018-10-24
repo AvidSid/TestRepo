@@ -206,11 +206,11 @@ class GHAapp < Sinatra::Application
         when 'file'
           logger.debug 'item is of type file'
 
-          if item.name.end_with?: '.tf'
+          if item_name.end_with? '.tf'
             logger.debug 'item is of type TF'
             end
 
-          if item_name.ends_with?: '.tf.json'
+          if item_name.ends_with? '.tf.json'
             logger.debug 'item is of type TF JSON'
 
           end
