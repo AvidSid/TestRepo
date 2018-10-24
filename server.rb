@@ -171,6 +171,10 @@ class GHAapp < Sinatra::Application
 
       author_email = payload['commits'][0]['author']['email']
 
+      branch_ref = payload['ref']
+
+      branch = branch_ref.split('/').last
+
       logger.debug repo
 
       logger.debug repo_url
@@ -178,6 +182,9 @@ class GHAapp < Sinatra::Application
       logger.debug author_name
 
       logger.debug author_email
+
+      logger.debug branch
+
     end
 
     ## 
