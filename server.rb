@@ -281,7 +281,10 @@ class GHAapp < Sinatra::Application
         file_array << File.new(file_location, 'rb')
       }
       logger.debug file_array.count
+
+      logger.debug 'adding new files'
       params[:files] = file_array
+
       RestClient.post(url,params){ |response, request, result, &block|
         case response.code
         when 200
