@@ -281,7 +281,6 @@ class GHAapp < Sinatra::Application
       $files_to_upload_array.each { |file_location|
         params << [:files, File.new(file_location, 'rb')]
       }
-
       # logger.debug 'adding new files: ' + params
       # params = {
       #   :customerID => customer_id,
