@@ -274,7 +274,7 @@ class GHAapp < Sinatra::Application
       #   @file_array.push(File.new(file_location, 'rb'))
       # }
 
-      params = Array.new
+      params = []
 
       $files_to_upload_array.each { |file_location|
         params << [:files, File.new(file_location, 'rb')]
@@ -289,6 +289,8 @@ class GHAapp < Sinatra::Application
 
       #   :multipart => true
       # }
+
+      logger.debug params.count
 
       RestClient.post(url,{
         :transfer => {
