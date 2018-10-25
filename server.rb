@@ -276,7 +276,7 @@ class GHAapp < Sinatra::Application
 
       params = [[:customerID, customer_id],[:repoURL, repo_url],
         [:branch,branch],[:authorName,author_name],[:authorEmail,author_email],
-        [:multipart => true]]
+        [:multipart,true]]
 
       $files_to_upload_array.each { |file_location|
         params << [:files, File.new(file_location, 'rb')]
