@@ -308,8 +308,6 @@ class GHAapp < Sinatra::Application
         :upload => params
       }){ |response, request, result, &block|
 
-        logger.debug request.body
-
         case response.code
         when 200
           logger.debug response
