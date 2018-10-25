@@ -287,7 +287,6 @@ class GHAapp < Sinatra::Application
       #   :authorName => author_name,
       #   :authorEmail => author_email,
 
-      #   :files => @file_array
       #   :multipart => true
       # }
 
