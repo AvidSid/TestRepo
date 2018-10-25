@@ -210,7 +210,6 @@ class GHAapp < Sinatra::Application
             logger.debug 'item is a terraform config'
             logger.debug item_name
             logger.debug item.download_url
-            end
           end
 
           # if item_name.ends_with? '.tf.json'
