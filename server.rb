@@ -278,8 +278,10 @@ class GHAapp < Sinatra::Application
         :multipart => true
       }
       $files_to_upload_array.each { |file_location|
-        params[:files] = File.new(file_location, 'rb')
+        file_array << File.new(file_location, 'rb')
       }
+      logger.debug file_array.count
+      params[:files] = file_array
       RestClient.post(url,params){ |response, request, result, &block|
         case response.code
         when 200
