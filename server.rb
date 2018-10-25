@@ -269,7 +269,7 @@ class GHAapp < Sinatra::Application
     def post_to_server(repo_url, branch, author_name, author_email, customer_id)
       url = "http://localhost:8080/public/terraform/githubFileUpload"
 
-      output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID="'+ customer_id +'" -F "repoURL='+ repo_url +'" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'"')
+      output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID='+ customer_id +'" -F "repoURL='+ repo_url +'" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'"')
       puts "output is #{output}"
 
       # @file_array = Array.new
