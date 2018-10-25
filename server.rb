@@ -268,17 +268,21 @@ class GHAapp < Sinatra::Application
 
     def post_to_server(repo_url, branch, author_name, author_email, customer_id)
       url = "http://localhost:8080/public/terraform/githubFileUpload"
-      @file_array = Array.new
+
+      output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID="'+ customer_id +'" -F "repoURL='+ repo_url +'" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'"')
+      puts "output is #{output}"
+
+      # @file_array = Array.new
 
       # $files_to_upload_array.each { |file_location|
       #   @file_array.push(File.new(file_location, 'rb'))
       # }
 
-      params = []
+      # params = []
 
-      $files_to_upload_array.each { |file_location|
-        params << [:files, File.new(file_location, 'rb')]
-      }
+      # $files_to_upload_array.each { |file_location|
+      #   params << [:files, File.new(file_location, 'rb')]
+      # }
       # logger.debug 'adding new files: ' + params
       # params = {
       #   :customerID => customer_id,
@@ -290,31 +294,31 @@ class GHAapp < Sinatra::Application
       #   :multipart => true
       # }
 
-      logger.debug params.count
+      # logger.debug params.count
 
-      RestClient.post(url,{
-        :transfer => {
-          :customerID => customer_id,
-          :repoURL => repo_url,
-          :branch => branch,
-          :authorName => author_name,
-          :authorEmail => author_email,
-        },
-        :customerID => customer_id,
-        :repoURL => repo_url,
-        :branch => branch,
-        :authorName => author_name,
-        :authorEmail => author_email,
-        :upload => params
-      }){ |response, request, result, &block|
+      # RestClient.post(url,{
+      #   :transfer => {
+      #     :customerID => customer_id,
+      #     :repoURL => repo_url,
+      #     :branch => branch,
+      #     :authorName => author_name,
+      #     :authorEmail => author_email,
+      #   },
+      #   :customerID => customer_id,
+      #   :repoURL => repo_url,
+      #   :branch => branch,
+      #   :authorName => author_name,
+      #   :authorEmail => author_email,
+      #   :upload => params
+      # }){ |response, request, result, &block|
 
-        case response.code
-        when 200
-          logger.debug response
-        else
-          response.return!(&block)
-        end
-      }
+      #   case response.code
+      #   when 200
+      #     logger.debug response
+      #   else
+      #     response.return!(&block)
+      #   end
+      # }
     end
 
   end
