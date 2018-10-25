@@ -217,7 +217,7 @@ class GHAapp < Sinatra::Application
             end
             content_file = @bot_client.contents(repo, :path => path_for_fetch_file)
             file_data = Base64.decode64(content_file.content)
-            File.write(path_for_fetch_file, file_data)
+            File.write("temp/" + path_for_fetch_file, file_data)
           end
 
           # if item_name.ends_with? '.tf.json'
