@@ -277,6 +277,7 @@ class GHAapp < Sinatra::Application
         :authorEmail => author_email,
         :multipart => true
       }
+
       $files_to_upload_array.each { |file_location|
         @file_array.push(File.new(file_location, 'rb'))
       }
