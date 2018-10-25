@@ -272,6 +272,8 @@ class GHAapp < Sinatra::Application
       output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID='+ customer_id + '" -F "repoURL=' + repo_url + '" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'" `find temp \( -name "*.tf" -o -name "*.tf.json" \) -type f -exec echo "-F files=@{}" \;`')
       puts "output is #{output}"
 
+      FileUtils.rm_rf("temp/.", secure: true)
+
       # @file_array = Array.new
 
       # $files_to_upload_array.each { |file_location|
