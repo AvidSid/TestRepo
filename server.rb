@@ -188,11 +188,15 @@ class GHAapp < Sinatra::Application
 
       logger.debug branch
 
+      $files_to_upload_array = Array.new
+
       repo = payload['repository']['full_name']
 
       result = @bot_client.contents(repo, {})
 
       recursive_repo_file_fetch(result, repo, '')
+
+      logger.debug $files_to_upload_array
 
     end
 
@@ -219,11 +223,9 @@ class GHAapp < Sinatra::Application
             content_file = @bot_client.contents(repo, :path => path_for_fetch_file)
             file_data = Base64.decode64(content_file.content)
             path = "temp/" + path_for_fetch_file
-            dirname = File.dirname(path)
-            unless File.directory?(dirname)
-              FileUtils.mkdir_p(dirname)
-            end
+            make_directories_if_needed(path)
             File.write(path, file_data)
+            $files_to_upload_array << path
           end
 
           # if item_name.ends_with? '.tf.json'
@@ -245,6 +247,13 @@ class GHAapp < Sinatra::Application
           recursive_repo_file_fetch(dir_result, repo, path_for_fetch)
         end
       }
+    end
+
+    def make_directories_if_needed(file_path)
+      dirname = File.dirname(path)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
     end
 
     ## method to authenticate and set up the client go no
