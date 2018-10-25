@@ -179,6 +179,8 @@ class GHAapp < Sinatra::Application
 
       branch = branch_ref.split('/').last
 
+      post_commit_hash = payload['after']
+
       logger.debug repo
 
       logger.debug repo_url
@@ -195,7 +197,9 @@ class GHAapp < Sinatra::Application
 
       result = @bot_client.contents(repo, {})
 
-      recursive_repo_file_fetch(result, repo, '')
+      temp_folder_name = 'temp-' + post_commit_hash
+
+      recursive_repo_file_fetch(result, repo, '', temp_folder_name)
 
       logger.debug $files_to_upload_array
 
@@ -203,7 +207,7 @@ class GHAapp < Sinatra::Application
 
     end
 
-    def recursive_repo_file_fetch(result, repo, base_path)
+    def recursive_repo_file_fetch(result, repo, base_path, temp_folder_name)
 
       result.each { |item|
 
@@ -225,7 +229,7 @@ class GHAapp < Sinatra::Application
             end
             content_file = @bot_client.contents(repo, :path => path_for_fetch_file)
             file_data = Base64.decode64(content_file.content)
-            path = "temp/" + path_for_fetch_file
+            path = temp_folder_name + "/" + path_for_fetch_file
             make_directories_if_needed(path)
             File.write(path, file_data)
             $files_to_upload_array << path
@@ -247,7 +251,7 @@ class GHAapp < Sinatra::Application
 
           # logger.debug "path : " + path_for_fetch
           dir_result = @bot_client.contents(repo, :path => path_for_fetch)
-          recursive_repo_file_fetch(dir_result, repo, path_for_fetch)
+          recursive_repo_file_fetch(dir_result, repo, path_for_fetch, temp_folder_name)
         end
       }
     end
@@ -266,14 +270,14 @@ class GHAapp < Sinatra::Application
       @bot_client ||= Octokit::Client.new(bearer_token: installation_token)
     end
 
-    def post_to_server(repo_url, branch, author_name, author_email, customer_id)
+    def post_to_server(repo_url, branch, author_name, author_email, customer_id, temp_folder_name)
       url = "http://localhost:8080/public/terraform/githubFileUpload"
 
-      output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID='+ customer_id + '" -F "repoURL=' + repo_url + '" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'" `find temp \( -name "*.tf" -o -name "*.tf.json" \) -type f -exec echo "-F files=@{}" \;`')
+      output = system('curl "http://localhost:8080/public/terraform/githubFileUpload" -F "customerID='+ customer_id + '" -F "repoURL=' + repo_url + '" -F "authorName=' + author_name + '" -F "authorEmail=' + author_email + '" -F "branch='+ branch +'" `find ' + temp_folder_name + ' \( -name "*.tf" -o -name "*.tf.json" \) -type f -exec echo "-F files=@{}" \;`')
       puts "output is #{output}"
 
       #to delete the created temp files
-      FileUtils.rm_rf("temp/.", secure: true)
+      FileUtils.rm_rf(temp_folder_name + "/.", secure: true)
 
       # @file_array = Array.new
 
