@@ -274,7 +274,7 @@ class GHAapp < Sinatra::Application
       #   @file_array.push(File.new(file_location, 'rb'))
       # }
 
-      params = ParamsArray.new([[:customerID, customer_id],[:repoURL, repo_url],
+      params = Array.new([[:customerID, customer_id],[:repoURL, repo_url],
         [:branch,branch],[:authorName,author_name],[:authorEmail,author_email],
         [:multipart => true]])
 
