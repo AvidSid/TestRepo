@@ -203,7 +203,7 @@ class GHAapp < Sinatra::Application
 
       logger.debug $files_to_upload_array
 
-      post_to_server(repo_url, branch, author_name, author_email, '9dc27a01-ce32-45df-9c0f-c39254a40b2c')
+      post_to_server(repo_url, branch, author_name, author_email, '9dc27a01-ce32-45df-9c0f-c39254a40b2c', temp_folder_name)
 
     end
 
