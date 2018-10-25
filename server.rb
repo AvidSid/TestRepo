@@ -73,7 +73,7 @@ class GHAapp < Sinatra::Application
         # How long is the JWT good for (in seconds)?
         # Let's say it can be used for 10 minutes before it needs to be refreshed.
         # TODO we don't actually cache this token, we regenerate a new one every time!
-        exp: Time.now.to_i + (10 * 60),
+        exp: Time.now.to_i + (3 * 60),
 
         # Your GitHub App's identifier number, so GitHub knows who issued the JWT, and know what permissions
         # this token has.
