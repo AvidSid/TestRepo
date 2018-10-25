@@ -268,7 +268,7 @@ class GHAapp < Sinatra::Application
 
     def post_to_server(repo_url, branch, author_name, author_email, customer_id)
       url = "http://localhost:8080/public/terraform/githubFileUpload"
-      file_array = Array.new
+      @file_array = Array.new
       params = {
         :customerID => customer_id,
         :repoURL => repo_url,
@@ -278,12 +278,12 @@ class GHAapp < Sinatra::Application
         :multipart => true
       }
       $files_to_upload_array.each { |file_location|
-        file_array << File.new(file_location, 'rb')
+        @file_array.push(File.new(file_location, 'rb'))
       }
       logger.debug file_array.count
 
       logger.debug 'adding new files'
-      params[:files] = file_array
+      params[:files] = @file_array
 
       RestClient.post(url,params){ |response, request, result, &block|
         case response.code
