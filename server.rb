@@ -278,7 +278,7 @@ class GHAapp < Sinatra::Application
         :multipart => true
       }
       $files_to_upload_array.each { |file_location|
-        params << {:files => File.new(file_location, 'rb')}
+        params[:files] = File.new(file_location, 'rb')
       }
       RestClient.post(url,params){ |response, request, result, &block|
         case response.code
