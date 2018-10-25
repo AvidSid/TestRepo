@@ -282,7 +282,7 @@ class GHAapp < Sinatra::Application
         params << [:files, File.new(file_location, 'rb')]
       }
 
-      logger.debug 'adding new files: ' + params
+      # logger.debug 'adding new files: ' + params
       # params = {
       #   :customerID => customer_id,
       #   :repoURL => repo_url,
