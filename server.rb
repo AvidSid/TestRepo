@@ -276,7 +276,7 @@ class GHAapp < Sinatra::Application
       puts "output is #{output}"
 
       #to delete the created temp files
-      FileUtils.rm_rf(temp_folder_name + "/.", secure: true)
+      FileUtils.rm_rf(temp_folder_name + "/", secure: true)
 
       # @file_array = Array.new
 
