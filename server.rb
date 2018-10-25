@@ -7,6 +7,7 @@ require 'jwt'
 require 'base64'
 require 'fileutils'
 require 'time' # This is necessary to get the ISO 8601 representation of a Time object
+require 'rest-client'
 
 set :port, 3333
 
@@ -198,6 +199,8 @@ class GHAapp < Sinatra::Application
 
       logger.debug $files_to_upload_array
 
+      post_to_server(repo_url, branch, author_name, author_email, '9dc27a01-ce32-45df-9c0f-c39254a40b2c')
+
     end
 
     def recursive_repo_file_fetch(result, repo, base_path)
@@ -261,6 +264,32 @@ class GHAapp < Sinatra::Application
       installation_id = payload['installation']['id']
       installation_token = @client.create_app_installation_access_token(installation_id)[:token]
       @bot_client ||= Octokit::Client.new(bearer_token: installation_token)
+    end
+
+    def post_to_server(repo_url, branch, author_name, author_email, customer_id)
+      url = "http://localhost:8080/public/terraform/githubFileUpload"
+      file_array = Array.new
+      $files_to_upload_array.each { |file_location|
+        file_array << File.new(file_location, 'rb')
+      }
+      params = {
+        :customerID => customer_id,
+        :repoURL => repo_url,
+        :branch => branch,
+        :authorName => author_name,
+        :authorEmail => author_email,
+        :files => file_array,
+        :multipart => true
+      }
+      RestClient.post(url,params){ |response, request, result, &block|
+        case response.code
+        when 200
+          logger.debug "It worked !"
+          logger.debug response
+        else
+          response.return!(&block)
+        end
+      }
     end
 
   end
