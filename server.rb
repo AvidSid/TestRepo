@@ -212,7 +212,6 @@ class GHAapp < Sinatra::Application
       result.each { |item|
 
         item_name = item.name
-
         # logger.debug item_name
 
         case item.type
