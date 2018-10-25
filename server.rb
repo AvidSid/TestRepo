@@ -210,6 +210,12 @@ class GHAapp < Sinatra::Application
             logger.debug 'item is a terraform config'
             logger.debug item_name
             logger.debug item.download_url
+            path_for_fetch_file = item_name
+            if base_path != ''
+              path_for_fetch_file = base_path + "/" + item_name
+            end
+            content_file = @bot_client.contents(repo, :path => path_for_fetch_file)
+            logger.debug content_file
           end
 
           # if item_name.ends_with? '.tf.json'
