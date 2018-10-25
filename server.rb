@@ -250,7 +250,7 @@ class GHAapp < Sinatra::Application
     end
 
     def make_directories_if_needed(file_path)
-      dirname = File.dirname(path)
+      dirname = File.dirname(file_path)
       unless File.directory?(dirname)
         FileUtils.mkdir_p(dirname)
       end
