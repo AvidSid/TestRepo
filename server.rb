@@ -305,6 +305,9 @@ class GHAapp < Sinatra::Application
         :authorEmail => author_email,
         :upload => params
       }){ |response, request, result, &block|
+
+        logger.debug request
+
         case response.code
         when 200
           logger.debug response
