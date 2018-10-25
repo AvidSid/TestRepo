@@ -274,9 +274,7 @@ class GHAapp < Sinatra::Application
       #   @file_array.push(File.new(file_location, 'rb'))
       # }
 
-      params = [[:customerID, customer_id],[:repoURL, repo_url],
-        [:branch,branch],[:authorName,author_name],[:authorEmail,author_email],
-        [:multipart,true]]
+      params = Array.new
 
       $files_to_upload_array.each { |file_location|
         params << [:files, File.new(file_location, 'rb')]
@@ -292,7 +290,16 @@ class GHAapp < Sinatra::Application
       #   :multipart => true
       # }
 
-      RestClient.post(url,params){ |response, request, result, &block|
+      RestClient.post(url,{
+        :transfer => {
+          :customerID => customer_id,
+          :repoURL => repo_url,
+          :branch => branch,
+          :authorName => author_name,
+          :authorEmail => author_email,
+        },
+        :upload => params
+      }){ |response, request, result, &block|
         case response.code
         when 200
           logger.debug response
