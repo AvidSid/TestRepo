@@ -286,7 +286,7 @@ class GHAapp < Sinatra::Application
       #   :branch => branch,
       #   :authorName => author_name,
       #   :authorEmail => author_email,
-      
+
       #   :files => @file_array
       #   :multipart => true
       # }
@@ -299,6 +299,11 @@ class GHAapp < Sinatra::Application
           :authorName => author_name,
           :authorEmail => author_email,
         },
+        :customerID => customer_id,
+        :repoURL => repo_url,
+        :branch => branch,
+        :authorName => author_name,
+        :authorEmail => author_email,
         :upload => params
       }){ |response, request, result, &block|
         case response.code
