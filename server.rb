@@ -200,14 +200,17 @@ class GHAapp < Sinatra::Application
 
         item_name = item.name
 
-        logger.debug item_name
+        # logger.debug item_name
 
         case item.type
         when 'file'
-          logger.debug 'item is of type file'
+          # logger.debug 'item is of type file'
 
           if (item_name.end_with? '.tf') or (item_name.end_with? '.tf.json')
-            logger.debug 'item is of type TF'
+            logger.debug 'item is a terraform config'
+            logger.debug item_name
+            logger.debug item.download_url
+            end
           end
 
           # if item_name.ends_with? '.tf.json'
@@ -216,7 +219,7 @@ class GHAapp < Sinatra::Application
           # end
 
         when 'dir'
-          logger.debug "item is of type directory"
+          # logger.debug "item is of type directory"
 
           path_for_fetch = item_name
 
@@ -224,7 +227,7 @@ class GHAapp < Sinatra::Application
             path_for_fetch = base_path + "/" + item_name
           end
 
-          logger.debug "path : " + path_for_fetch
+          # logger.debug "path : " + path_for_fetch
           dir_result = @bot_client.contents(repo, :path => path_for_fetch)
           recursive_repo_file_fetch(dir_result, repo, path_for_fetch)
         end
