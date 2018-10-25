@@ -5,6 +5,7 @@ require 'openssl'
 require 'octokit'
 require 'jwt'
 require 'base64'
+require 'fileutils'
 require 'time' # This is necessary to get the ISO 8601 representation of a Time object
 
 set :port, 3333
@@ -217,7 +218,12 @@ class GHAapp < Sinatra::Application
             end
             content_file = @bot_client.contents(repo, :path => path_for_fetch_file)
             file_data = Base64.decode64(content_file.content)
-            File.write("temp/" + path_for_fetch_file, file_data)
+            path = "temp/" + path_for_fetch_file
+            dirname = File.dirname(path)
+            unless File.directory?(dirname)
+              FileUtils.mkdir_p(dirname)
+            end
+            File.write(path, file_data)
           end
 
           # if item_name.ends_with? '.tf.json'
