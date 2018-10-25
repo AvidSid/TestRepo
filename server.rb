@@ -280,7 +280,6 @@ class GHAapp < Sinatra::Application
       $files_to_upload_array.each { |file_location|
         @file_array.push(File.new(file_location, 'rb'))
       }
-      logger.debug @file_array.count
 
       logger.debug 'adding new files'
       params[:files] = @file_array
